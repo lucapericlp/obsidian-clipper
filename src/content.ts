@@ -205,7 +205,12 @@ declare global {
 					sendResponse({ isActive: false });
 				});
 			return true;
-		}
+			} else if (request.action === "addAnnotation") {
+				const { highlightId, annotation } = request;
+				highlighter.addAnnotation(highlightId, annotation);
+				sendResponse({ success: true });
+				return true;
+			}
 		return true;
 	});
 

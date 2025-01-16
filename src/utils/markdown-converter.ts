@@ -121,7 +121,7 @@ const SUPPORTED_LANGUAGES = new Set([
 	'vhdl'
 ]);
 
-export function createMarkdownContent(content: string, url: string) {
+export function createMarkdownContent(content: string, url: string, highlights: AnyHighlightData[] = []) {
 	debugLog('Markdown', 'Starting markdown conversion for URL:', url);
 	debugLog('Markdown', 'Content length:', content.length);
 
@@ -936,6 +936,17 @@ export function createMarkdownContent(content: string, url: string) {
 		
 		// Clear the footnotes object for the next conversion
 		Object.keys(footnotes).forEach(key => delete footnotes[key]);
+
+		// Process highlights and annotations
+		if (highlights.length > 0) {
+			const highlightMarkdown = highlights.map(highlight => {
+				const highlightContent = turndownService.turndown(highlight.content);
+				const annotationContent = highlight.notes?.map(note => turndownService.turndown(note)).join('\n') || '';
+				return `> ${highlightContent}\n${annotationContent}`;
+			}).join('\n\n');
+
+			markdown += `\n\n---\n\n${highlightMarkdown}`;
+		}
 
 		return markdown.trim();
 	} catch (error) {
