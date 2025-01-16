@@ -445,8 +445,8 @@ function doHighlightsOverlap(highlight1: AnyHighlightData, highlight2: AnyHighli
 
 	if (element1 === element2) {
 		// For text highlights in the same element, check for overlap
-		if (highlight1.type === 'text' && highlight2.type === 'text') {
-			return (highlight1.startOffset < highlight2.endOffset && highlight2.startOffset < highlight1.endOffset);
+		if (highlight1.startOffset < highlight2.endOffset && highlight2.startOffset < highlight1.endOffset) {
+			return true;
 		}
 		// For other types, consider them overlapping if they're in the same element
 		return true;

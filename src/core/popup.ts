@@ -1016,7 +1016,7 @@ function handleTemplateChange(templateId: string) {
 async function checkHighlighterModeState(tabId: number) {
 	try {
 		const result = await browser.storage.local.get('isHighlighterMode');
-		isHighlighterMode = result.isHighlighterMode as boolean;
+		isHighlighterMode = result.isHighlighterMode ?? false;
 		
 		loadedSettings = await loadSettings();
 		
